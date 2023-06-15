@@ -11,7 +11,7 @@ class FormInput extends Component {
                     style={input}
                     placeholder='add task'
                 />
-                <Button/>
+                <Button text='add' variant='primary'/>
             </form>
         )
     }
