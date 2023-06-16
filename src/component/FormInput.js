@@ -3,15 +3,35 @@ import Button from './Button';
 import '../styles/FormInput.css'
 
 class FormInput extends Component {
+    state = {
+        text: ""
+    }
+
+    change = e => {
+        this.setState({text: e.target.value})
+    }
+
+    submit = e => {
+        e.preventDefault() //prevent form's default behaviour
+        if(this.state.text !== ""){
+            this.props.add(this.state.text)
+        }
+        this.setState({
+            text: ""
+        })
+    }
+
     render(){
         return(
-            <form style={inputForm}>
+            <form style={inputForm} onSubmit={this.submit}>
                 <input 
                     type='text'
+                    onChange={this.change}
+                    value={this.state.text}
                     style={input}
                     placeholder='add task'
                 />
-                <Button text='add' variant='primary'/>
+                <Button text='add' variant='primary' action={this.submit}/>
             </form>
         )
     }

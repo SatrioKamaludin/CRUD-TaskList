@@ -21,7 +21,18 @@ class App extends Component {
 
   deleteTask = id => {
     this.setState({
-      todos: this.state.todos.filter(item => item.id != id)
+      todos: this.state.todos.filter(item => item.id !== id)
+    })
+  }
+
+  addTask = data => {
+    const id = this.state.todos.length
+    const newData = {
+      id: id + 1,
+      title: data
+    }
+    this.setState({
+      todos: [...this.state.todos, newData]
     })
   }
 
@@ -39,7 +50,7 @@ class App extends Component {
           )}
         </div>
         <div className='input-form'>
-          <FormInput />
+          <FormInput add={this.addTask} />
         </div>
       </div>
     )
