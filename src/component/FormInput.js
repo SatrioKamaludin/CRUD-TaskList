@@ -1,43 +1,7 @@
 import React, { Component } from 'react'
 import Button from './Button';
+import Proptypes from 'prop-types';
 import '../styles/FormInput.css'
-
-class FormInput extends Component {
-    state = {
-        text: ""
-    }
-
-    change = e => {
-        this.setState({text: e.target.value})
-    }
-
-    submit = e => {
-        e.preventDefault() //prevent form's default behaviour
-        if(this.state.text !== ""){
-            this.props.add(this.state.text)
-        }
-        this.setState({
-            text: ""
-        })
-    }
-
-    render(){
-        return(
-            <form style={inputForm} onSubmit={this.submit}>
-                <input 
-                    type='text'
-                    onChange={this.change}
-                    value={this.state.text}
-                    style={input}
-                    placeholder='add task'
-                />
-                <Button text='add' variant='primary' action={this.submit}/>
-            </form>
-        )
-    }
-}
-
-export default FormInput;
 
 const inputForm = {
     background: "#fff",
@@ -54,3 +18,44 @@ const input = {
     width: "70%",
     border: "none"
 }
+
+class FormInput extends Component {
+    state = {
+        text: ""
+    }
+
+    change = e => {
+        this.setState({ text: e.target.value })
+    }
+
+    submit = e => {
+        e.preventDefault() //prevent form's default behaviour
+        if (this.state.text !== "") {
+            this.props.add(this.state.text)
+        }
+        this.setState({
+            text: ""
+        })
+    }
+
+    render() {
+        return (
+            <form style={inputForm} onSubmit={this.submit}>
+                <input
+                    type='text'
+                    onChange={this.change}
+                    value={this.state.text}
+                    style={input}
+                    placeholder='add task'
+                />
+                <Button text='add' variant='primary' action={this.submit} />
+            </form>
+        )
+    }
+}
+
+FormInput.propTypes = {
+    add: Proptypes.func.isRequired, // Corrected prop type definition
+};
+
+export default FormInput;

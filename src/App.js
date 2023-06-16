@@ -19,17 +19,17 @@ class App extends Component {
       }
     ],
     isEdit: false,
-    editData : {
+    editData: {
       id: "",
       title: ""
     }
   }
 
   update = () => {
-    const {id, title} = this.state.editData
-    const newData = {id, title}
+    const { id, title } = this.state.editData
+    const newData = { id, title }
     const newTodos = this.state.todos
-    newTodos.splice((id-1), 1, newData)
+    newTodos.splice((id - 1), 1, newData)
     this.setState({
       todos: newTodos,
       isEdit: false,
@@ -42,7 +42,7 @@ class App extends Component {
 
   setTitle = e => {
     this.setState({
-      editData : {
+      editData: {
         ...this.state.editData,
         title: e.target.value
       }
@@ -52,7 +52,7 @@ class App extends Component {
   openModal = (id, data) => {
     this.setState({
       isEdit: true,
-      editData : {
+      editData: {
         id,
         title: data
       }
@@ -82,31 +82,30 @@ class App extends Component {
     })
   }
 
-  render(){
-    const {todos} = this.state;
-    return(
+  render() {
+    const { todos } = this.state;
+    return (
       <div className='app'>
         <div className='logo'>
-          <img src={logo} alt='logo'/>
+          <img src={logo} alt='logo' />
           <h3>Task List</h3>
         </div>
         <div className='list'>
-          {todos.map(item => 
-            <TodoItem 
-              key={item.id} 
-              todo={item} 
+          {todos.map(item =>
+            <TodoItem
+              key={item.id}
+              todo={item}
               del={this.deleteTask}
               open={this.openModal}
-              close={this.closeModal}
             />
           )}
         </div>
         <div className='input-form'>
           <FormInput add={this.addTask} />
         </div>
-        <EditModal 
-          edit={this.state.isEdit} 
-          close={this.closeModal} 
+        <EditModal
+          edit={this.state.isEdit}
+          close={this.closeModal}
           change={this.setTitle}
           data={this.state.editData}
           update={this.update}
