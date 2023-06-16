@@ -4,6 +4,7 @@ import './App.css';
 import Button from './component/Button';
 import FormInput from './component/FormInput';
 import TodoItem from './component/TodoItem';
+import EditModal from './component/EditModal';
 
 class App extends Component {
   state = {
@@ -16,7 +17,20 @@ class App extends Component {
         id: 2,
         title: "workout"
       }
-    ]
+    ],
+    isEdit: false
+  }
+
+  openModal = () => {
+    this.setState({
+      isEdit: true
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+      isEdit: false
+    })
   }
 
   deleteTask = id => {
@@ -46,12 +60,19 @@ class App extends Component {
         </div>
         <div className='list'>
           {todos.map(item => 
-            <TodoItem key={item.id} todo={item} del={this.deleteTask}/>
+            <TodoItem 
+              key={item.id} 
+              todo={item} 
+              del={this.deleteTask}
+              open={this.openModal}
+              close={this.closeModal}
+            />
           )}
         </div>
         <div className='input-form'>
           <FormInput add={this.addTask} />
         </div>
+        <EditModal edit={this.state.isEdit} close={this.closeModal}/>
       </div>
     )
   }
