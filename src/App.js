@@ -25,6 +25,21 @@ class App extends Component {
     }
   }
 
+  update = () => {
+    const {id, title} = this.state.editData
+    const newData = {id, title}
+    const newTodos = this.state.todos
+    newTodos.splice((id-1), 1, newData)
+    this.setState({
+      todos: newTodos,
+      isEdit: false,
+      editData: {
+        id: "",
+        title: ""
+      }
+    })
+  }
+
   setTitle = e => {
     this.setState({
       editData : {
@@ -94,6 +109,7 @@ class App extends Component {
           close={this.closeModal} 
           change={this.setTitle}
           data={this.state.editData}
+          update={this.update}
         />
       </div>
     )
