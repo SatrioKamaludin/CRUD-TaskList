@@ -18,6 +18,13 @@ class App extends Component {
       }
     ]
   }
+
+  deleteTask = id => {
+    this.setState({
+      todos: this.state.todos.filter(item => item.id != id)
+    })
+  }
+
   render(){
     const {todos} = this.state;
     return(
@@ -28,7 +35,7 @@ class App extends Component {
         </div>
         <div className='list'>
           {todos.map(item => 
-            <TodoItem key={item.id} todo={item}/>
+            <TodoItem key={item.id} todo={item} del={this.deleteTask}/>
           )}
         </div>
         <div className='input-form'>
