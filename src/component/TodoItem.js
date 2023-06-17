@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Button from './Button';
 import Proptypes from 'prop-types';
 import DeleteModal from './DeleteModal';
@@ -14,45 +14,38 @@ const todoItem = {
     margin: "0.5rem 0"
 }
 
-class TodoItem extends Component {
-    state = {
-        isDeleteModalOpen: false
-    };
+const TodoItem = ({ todo, open, del }) => {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
-    openDeleteModal = () => {
-        this.setState({ isDeleteModalOpen: true });
-    };
-
-    closeDeleteModal = () => {
-        this.setState({ isDeleteModalOpen: false });
-    };
-
-    delById = () => {
-        this.props.del(this.props.todo.id);
-        this.closeDeleteModal();
-    };
-
-    render() {
-        const { todo, open } = this.props;
-        const { isDeleteModalOpen } = this.state;
-
-        return (
-            <div style={todoItem}>
-                <p>{todo.title}</p>
-                <div>
-                    <Button text="edit" variant="success" action={() => open(todo.id, todo.title)} />
-                    <Button text="delete" variant="warning" action={this.openDeleteModal} />
-                </div>
-                {isDeleteModalOpen && (
-                    <DeleteModal
-                        isOpen={isDeleteModalOpen}
-                        onClose={this.closeDeleteModal}
-                        onDelete={this.delById}
-                    />
-                )}
-            </div>
-        );
+    const openDeleteModal = () => {
+        setIsDeleteModalOpen(true)
     }
+
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false)
+    }
+
+    const delById = () => {
+        del(todo.id)
+        closeDeleteModal()
+    }
+
+    return (
+        <div style={todoItem}>
+            <p>{todo.title}</p>
+            <div>
+                <Button text="edit" variant="success" action={() => open(todo.id, todo.title)} />
+                <Button text="delete" variant="warning" action={openDeleteModal} />
+            </div>
+            {isDeleteModalOpen && (
+                <DeleteModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={closeDeleteModal}
+                    onDelete={delById}
+                />
+            )}
+        </div>
+    )
 }
 
 TodoItem.propTypes = {

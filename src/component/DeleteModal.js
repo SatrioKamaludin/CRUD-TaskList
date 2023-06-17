@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Button from './Button'
 
+//Hooks are not required since there's no internal state
 class DeleteModal extends Component {
     render() {
         const { isOpen, onClose, onDelete } = this.props;

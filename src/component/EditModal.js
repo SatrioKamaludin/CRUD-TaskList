@@ -3,6 +3,7 @@ import Button from './Button'
 import Proptypes from 'prop-types';
 import '../styles/EditModal.css'
 
+//Hooks are not required since there's no internal state
 class EditModal extends Component {
     render() {
         const { edit, close, data, change, update } = this.props;

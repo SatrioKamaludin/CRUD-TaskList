@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Button from './Button';
 import Proptypes from 'prop-types';
 import '../styles/FormInput.css'
@@ -19,39 +19,34 @@ const input = {
     border: "none"
 }
 
-class FormInput extends Component {
-    state = {
-        text: ""
+const FormInput = ({ add }) => {
+
+    const [text, setText] = useState("")
+
+    const change = (e) => {
+        setText(e.target.value)
     }
 
-    change = e => {
-        this.setState({ text: e.target.value })
-    }
-
-    submit = e => {
+    const submit = (e) => {
         e.preventDefault() //prevent form's default behaviour
-        if (this.state.text !== "") {
-            this.props.add(this.state.text)
+        if (text !== "") {
+            add(text)
         }
-        this.setState({
-            text: ""
-        })
+        setText("")
     }
 
-    render() {
-        return (
-            <form style={inputForm} onSubmit={this.submit}>
-                <input
-                    type='text'
-                    onChange={this.change}
-                    value={this.state.text}
-                    style={input}
-                    placeholder='add task'
-                />
-                <Button text='add' variant='primary' action={this.submit} />
-            </form>
-        )
-    }
+    return (
+        <form style={inputForm} onSubmit={submit}>
+            <input
+                type='text'
+                onChange={change}
+                value={text}
+                style={input}
+                placeholder='add task'
+            />
+            <Button text='add' variant='primary' action={submit} />
+        </form>
+    )
 }
 
 FormInput.propTypes = {
