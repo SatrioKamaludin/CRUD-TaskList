@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import Button from './Button';
-import Proptypes from 'prop-types';
-import DeleteModal from './DeleteModal';
+import { connect } from 'react-redux'
+import Button from './Button'
+import Proptypes from 'prop-types'
+import DeleteModal from './DeleteModal'
+import { deleteTask } from '../store/actions/todosActions';
 
 const todoItem = {
     background: "#2da4f8",
@@ -14,7 +16,7 @@ const todoItem = {
     margin: "0.5rem 0"
 }
 
-const TodoItem = ({ todo, open, del }) => {
+const TodoItem = ({ todo, open, deleteTask }) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
     const openDeleteModal = () => {
@@ -25,8 +27,8 @@ const TodoItem = ({ todo, open, del }) => {
         setIsDeleteModalOpen(false)
     }
 
-    const delById = () => {
-        del(todo.id)
+    const delById = () => { 
+        deleteTask(todo.id) 
         closeDeleteModal()
     }
 
@@ -35,7 +37,7 @@ const TodoItem = ({ todo, open, del }) => {
             <p>{todo.title}</p>
             <div>
                 <Button text="edit" variant="success" action={() => open(todo.id, todo.title)} />
-                <Button text="delete" variant="warning" action={openDeleteModal} />
+                <Button text="delete" variant="warning" action={openDeleteModal} /> 
             </div>
             {isDeleteModalOpen && (
                 <DeleteModal
@@ -50,8 +52,14 @@ const TodoItem = ({ todo, open, del }) => {
 
 TodoItem.propTypes = {
     todo: Proptypes.object.isRequired,
-    del: Proptypes.func.isRequired
+    deleteTask: Proptypes.func.isRequired,
+    open: Proptypes.func.isRequired
 }
 
-export default TodoItem;
+const mapDispatchToProps = {
+    deleteTask
+};
+
+export default connect(null, mapDispatchToProps)(TodoItem)
+
 

@@ -1,88 +1,78 @@
 import React, { useState } from 'react'
 import logo from './logo.svg';
 import './App.css';
-import Button from './component/Button';
-import FormInput from './component/FormInput';
-import TodoItem from './component/TodoItem';
-import EditModal from './component/EditModal';
+import Button from './components/Button'
+import FormInput from './components/FormInput'
+import TodoItem from './components/TodoItem'
+import EditModal from './components/EditModal'
+import { connect, useDispatch, useSelector } from 'react-redux'
+import store from './store';
+import { addTask, deleteTask, updateTask } from './store/actions/todosActions';
 
 const App = () => {
 
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "reading a book"
-    },
-    {
-      id: 2,
-      title: "workout"
-    }
-  ])
-
-  const [isEdit, setIsEdit] = useState(false)
-
-  const [editData, setEditData] = useState({
-    id: "",
-    title: ""
-  })
+  const todos = useSelector(state => state.todos.todos);
+  const dispatch = useDispatch();
 
   const update = () => {
-    const { id, title } = editData
-    const newData = { id, title }
-    const newTodos = [...todos]
-    newTodos.splice(id - 1, 1, newData)
-    setTodos(newTodos)
-    setIsEdit(false)
-    setEditData({
-      id: "",
-      title: ""
-    })
-  }
+    const { id, title } = editData;
+    dispatch(updateTask(id, title));
+    setIsEdit(false);
+    setEditData({ id: "", title: "" });
+  };
 
   const setTitle = (e) => {
     setEditData((prevEditData) => ({
       ...prevEditData,
-      title: e.target.value
-    }))
-  }
+      title: e.target.value,
+    }));
+  };
 
   const openModal = (id, data) => {
-    setIsEdit(true)
+    setIsEdit(true);
     setEditData({
       id,
-      title: data
-    })
-  }
+      title: data,
+    });
+  };
 
   const closeModal = () => {
-    setIsEdit(false)
-  }
+    setIsEdit(false);
+  };
 
   const deleteTask = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((item) => item.id !== id))
-  }
+    dispatch(deleteTask(id));
+  };
 
   const addTask = (data) => {
-    const id = todos.length + 1
-    const newData = {
-      id,
-      title: data
-    }
-    setTodos((prevTodos) => [...prevTodos, newData])
-  }
+    dispatch(addTask(data));
+  };
+
+  const mapStateToProps = (state) => {
+    return {
+      todos: state.todos.todos,
+    };
+  };
+
+  const [isEdit, setIsEdit] = React.useState(false);
+  const [editData, setEditData] = React.useState({
+    id: "",
+    title: "",
+  });
 
   return (
+
     <div className='app'>
       <div className='logo'>
         <img src={logo} alt="logo" />
         <h3>Task list</h3>
       </div>
       <div className="list">
-        {todos.map((item) => (
+        {todos.map((item) => ( 
           <TodoItem
-            key={item.id}
+            key={item.id} 
             todo={item}
-            del={deleteTask}
+            del={deleteTask} 
             open={openModal}
           />
         ))}
@@ -98,7 +88,9 @@ const App = () => {
         update={update}
       />
     </div>
+
   )
 }
 
-export default App;
+
+export default App
