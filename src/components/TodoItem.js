@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useContext } from 'react'
 import Button from './Button'
 import Proptypes from 'prop-types'
 import DeleteModal from './DeleteModal'
-import { deleteTask } from '../store/actions/todosActions';
+import TodoContext from '../context/TodoContext'
 
 const todoItem = {
     background: "#2da4f8",
@@ -16,8 +15,10 @@ const todoItem = {
     margin: "0.5rem 0"
 }
 
-const TodoItem = ({ todo, open, deleteTask }) => {
+const TodoItem = ({ todo, open }) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+    const { deleteTask } = useContext(TodoContext)
 
     const openDeleteModal = () => {
         setIsDeleteModalOpen(true)
@@ -27,8 +28,8 @@ const TodoItem = ({ todo, open, deleteTask }) => {
         setIsDeleteModalOpen(false)
     }
 
-    const delById = () => { 
-        deleteTask(todo.id) 
+    const delById = () => {
+        deleteTask(todo.id)
         closeDeleteModal()
     }
 
@@ -37,14 +38,10 @@ const TodoItem = ({ todo, open, deleteTask }) => {
             <p>{todo.title}</p>
             <div>
                 <Button text="edit" variant="success" action={() => open(todo.id, todo.title)} />
-                <Button text="delete" variant="warning" action={openDeleteModal} /> 
+                <Button text="delete" variant="warning" action={openDeleteModal} />
             </div>
             {isDeleteModalOpen && (
-                <DeleteModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={closeDeleteModal}
-                    onDelete={delById}
-                />
+                <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} onDelete={delById} />
             )}
         </div>
     )
@@ -52,14 +49,6 @@ const TodoItem = ({ todo, open, deleteTask }) => {
 
 TodoItem.propTypes = {
     todo: Proptypes.object.isRequired,
-    deleteTask: Proptypes.func.isRequired,
-    open: Proptypes.func.isRequired
 }
 
-const mapDispatchToProps = {
-    deleteTask
-};
-
-export default connect(null, mapDispatchToProps)(TodoItem)
-
-
+export default TodoItem;

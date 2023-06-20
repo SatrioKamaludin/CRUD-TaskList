@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Button from './Button';
 import Proptypes from 'prop-types';
 import '../styles/FormInput.css'
-import { useDispatch } from 'react-redux';
-import { addTask } from '../store/actions/todosActions';
+import TodoContext from '../context/TodoContext';
 
 const inputForm = {
     background: "#fff",
@@ -21,10 +20,10 @@ const input = {
     border: "none"
 }
 
-const FormInput = ({ add }) => {
+const FormInput = () => {
 
     const [text, setText] = useState("")
-    const dispatch = useDispatch();
+    const { addTask } = useContext(TodoContext);
 
     const change = (e) => {
         setText(e.target.value)
@@ -32,8 +31,8 @@ const FormInput = ({ add }) => {
 
     const submit = (e) => {
         e.preventDefault() //prevent form's default behaviour
-        if (text !== "") {
-            dispatch(addTask(text));
+        if (text !== '') {
+            addTask(text);
         }
         setText("")
     }
@@ -41,13 +40,13 @@ const FormInput = ({ add }) => {
     return (
         <form style={inputForm} onSubmit={submit}>
             <input
-                type='text'
+                type="text"
                 onChange={change}
                 value={text}
                 style={input}
-                placeholder='add task'
+                placeholder="add task"
             />
-            <Button text='add' variant='primary' action={submit} />
+            <Button text="add" variant="primary" action={submit} />
         </form>
     )
 }
